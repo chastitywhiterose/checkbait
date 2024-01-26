@@ -22,6 +22,9 @@ int loop=1;
 SDL_Event e;
 SDL_Rect rect;
 
+int fps=60; /*frames per second*/
+int sdl_time,sdl_time1,delay;
+
 #include "sdl_chaste_checkerboard_surface.h"
 #include "sdl_chastefont_surface.h"
 
@@ -100,13 +103,36 @@ if(argc==1)
 
 init_checkerboard();
 /*main_check.rectcolor=0x0000FF;*/
-chaste_checker_xor();
 
+ main_check.x_begin=0;
+ main_check.y_begin=0;
+ /*main_check.x_end=width/2;*/
+ /*main_check.y_end=height/2;*/
+
+chaste_checker_xor();
  SDL_UpdateWindowSurface(window);
+
+ delay=1000/fps;
 
  loop=1;
  while(loop)
  {
+  sdl_time = SDL_GetTicks();
+  sdl_time1 = sdl_time+delay;
+
+ SDL_BlitSurface(bitmap,NULL,surface,NULL);
+ chaste_checker_xor();
+ SDL_UpdateWindowSurface(window);
+
+ main_check.x_begin--;
+ /*main_check.y_begin--;*/
+
+ /*time loop used to slow the game down so users can see it*/
+ while(sdl_time<sdl_time1)
+ {
+  sdl_time=SDL_GetTicks();
+ }
+
   /*test for events and only process if they exist*/
   while(SDL_PollEvent(&e))
   {

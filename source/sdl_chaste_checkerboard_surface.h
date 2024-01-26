@@ -96,12 +96,19 @@ void chaste_checker_xor()
    {
     rect.x=x;
     rect.y=y;
+
     /*SDL_RenderFillRect(renderer,&rect);*/
     /*SDL_FillRect(surface,&rect,main_check.rectcolor);*/
 
     /*set up the temporary coordinate variables*/
     tx2=rect.x+rect.w;
     ty2=rect.y+rect.h;
+
+    if(rect.x<0){/*printf("Error: Negative X\n");*/ /*return;*/ rect.x=0;}
+    if(rect.y<0){/*printf("Error: Negative Y\n");*/ /*return;*/ rect.y=0;}
+
+    if(tx2>=width){/*printf("Error: X too high.\n");*/ /*return;*/ tx2=width;}
+    if(ty2>=height){/*printf("Error: Y too high.\n");*/ /*return;*/ ty2=height;}
 
     /*draw square with direct pixel access*/
       ty=rect.y;
