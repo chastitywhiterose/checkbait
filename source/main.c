@@ -100,7 +100,7 @@ if(argc==1)
 
 init_checkerboard();
 /*main_check.rectcolor=0x0000FF;*/
-chaste_checker();
+chaste_checker_xor();
 
  SDL_UpdateWindowSurface(window);
 

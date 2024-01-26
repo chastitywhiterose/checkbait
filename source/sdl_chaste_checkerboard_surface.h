@@ -1,5 +1,5 @@
 /*
-sdl_chaste_checkerboard.h
+sdl_chaste_checkerboard_surface.h
 
 This file shows my own personal method of drawing a checkerboard in SDL2 using a renderer.
 */
@@ -62,6 +62,70 @@ void chaste_checker()
 }
 
 
+
+
+
+
+
+
+
+/*
+ this function draws a checkerboard. it is highly optimized because it does not switch colors during the function. it only draws half of the checkerboard squares and leaves the remaining areas the same as the background
+*/
+void chaste_checker_xor()
+{
+ int tx,ty,tx2,ty2; /*temp variables only for drawing the square*/
+ Uint32 *dsp; /*dsp is short for Destination Surface Pointer*/
+
+ int x,y,index,index1;
+ index=0;
+
+ dsp=(Uint32*)surface->pixels;
+
+ rect.w=main_check.rectsize;
+ rect.h=main_check.rectsize;
+
+ y=main_check.y_begin;
+ while(y<main_check.y_end)
+ {
+  index1=index;
+  x=main_check.x_begin;
+  while(x<main_check.x_end)
+  {
+   if(index==1)
+   {
+    rect.x=x;
+    rect.y=y;
+    /*SDL_RenderFillRect(renderer,&rect);*/
+    /*SDL_FillRect(surface,&rect,main_check.rectcolor);*/
+
+    /*set up the temporary coordinate variables*/
+    tx2=rect.x+rect.w;
+    ty2=rect.y+rect.h;
+
+    /*draw square with direct pixel access*/
+      ty=rect.y;
+      while(ty<ty2)
+      {
+       tx=rect.x;
+       while(tx<tx2)
+       {
+        dsp[tx+ty*width]^=main_check.rectcolor;
+        tx++;
+       }
+       ty++;
+      }
+
+   }
+   index^=1;
+
+   x+=main_check.rectsize;
+  }
+  index=index1^1;
+  y+=main_check.rectsize;
+ }
+
+}
 
 
 
